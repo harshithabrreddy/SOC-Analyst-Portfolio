@@ -1,0 +1,818 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BR Harshitha | SOC Analyst L1 Portfolio</title>
+<meta name="description" content="Entry-level SOC Analyst candidate with a B.Tech in Computer Science and Cybersecurity. Case files on SSH brute-force detection, Splunk failed-login searches and phishing email analysis.">
+<meta name="theme-color" content="#0C1424">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0C1424; --panel:#131E33; --panel2:#182640; --line:#26354F;
+  --text:#E8EEF8; --muted:#9FB0C8;
+  --blue:#6C9BFF; --amber:#F4B24A; --red:#FF7A7A; --green:#4FD8A4;
+  --sans:"Archivo", system-ui, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:1.05rem;line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:var(--blue)}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--blue);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+h1,h2,h3{margin:0;line-height:1.08}
+h1{font-size:clamp(2.5rem,5.2vw,4rem);font-weight:800;font-stretch:106%;letter-spacing:-.02em}
+h2{font-size:clamp(1.8rem,3.6vw,2.7rem);font-weight:700;font-stretch:108%;letter-spacing:-.015em;margin-bottom:12px}
+h3{font-size:1.3rem;font-weight:700;font-stretch:104%}
+section{padding:84px 0}
+.intro{color:var(--muted);max-width:42em;margin:0 0 36px}
+
+/* top bar */
+.bar{position:sticky;top:0;z-index:10;background:rgba(12,20,36,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;align-items:center;justify-content:space-between;height:60px;gap:16px}
+.logo{font-weight:800;font-stretch:112%;color:var(--text);text-decoration:none}
+nav{display:flex;gap:18px;font-size:.93rem}
+nav a{color:var(--muted);text-decoration:none}
+nav a:hover{color:var(--text)}
+.status{display:flex;align-items:center;gap:8px;font-size:.88rem;color:var(--muted);border:1px solid var(--line);padding:5px 12px;border-radius:999px;white-space:nowrap}
+.status i{width:8px;height:8px;border-radius:50%;background:var(--green)}
+
+/* hero */
+.hero{padding:72px 0 88px}
+.hero-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:56px;align-items:center}
+.role{font-size:1.3rem;font-weight:600;color:var(--blue);margin:16px 0 18px;font-stretch:104%}
+.lead{color:var(--muted);max-width:33em;margin:0 0 30px}
+.btns{display:flex;flex-wrap:wrap;gap:12px}
+.btn{font-weight:600;text-decoration:none;padding:12px 20px;border-radius:6px;border:1.5px solid var(--line);color:var(--text)}
+.btn:hover{border-color:var(--blue);color:var(--blue)}
+.btn.primary{background:var(--blue);border-color:var(--blue);color:#0C1424}
+.btn.primary:hover{background:#8FB2FF;border-color:#8FB2FF;color:#0C1424}
+
+/* console: the one animated moment */
+.console{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.console-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--panel2);font-size:.92rem;font-weight:600}
+.console-head button{font:inherit;font-size:.85rem;font-weight:600;color:var(--text);background:transparent;border:1px solid var(--line);border-radius:6px;padding:4px 12px;cursor:pointer}
+.console-head button:hover{border-color:var(--blue);color:var(--blue)}
+.log{list-style:none;margin:0;padding:14px 16px;font-family:var(--mono);font-size:.82rem;min-height:190px}
+.log li{display:flex;gap:12px;padding:3px 0;color:var(--muted)}
+.log li b{color:var(--text);font-weight:500;min-width:7.2em}
+.log li.rule{color:var(--amber)}
+.log li.rule b{color:var(--amber)}
+.alert{margin:0 16px 16px;border:1px solid var(--red);border-left-width:5px;border-radius:8px;padding:14px 16px;background:rgba(255,122,122,.07);transition:opacity .4s}
+.alert.hide{opacity:0}
+.alert h3{font-size:1.05rem;display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:10px}
+.sev{font-size:.78rem;font-weight:700;color:#0C1424;background:var(--red);padding:2px 10px;border-radius:999px}
+.alert dl{display:grid;grid-template-columns:auto 1fr;gap:4px 18px;margin:0;font-size:.92rem}
+.alert dt{color:var(--muted)}
+.alert dd{margin:0}
+.alert .verdict{color:var(--green);font-weight:600}
+
+/* about */
+.about{display:grid;grid-template-columns:300px 1fr;gap:56px;align-items:start}
+.id{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px}
+.id img{display:block;width:100%;height:auto;aspect-ratio:300/380;object-fit:cover;object-position:50% 18%;border-radius:8px}
+.id div{padding:12px 4px 2px}
+.id b{display:block;font-size:1.05rem}
+.id span{font-size:.9rem;color:var(--muted)}
+.about p{max-width:38em;margin:0 0 1em}
+.facts{margin:28px 0 0;padding:0;list-style:none;border-top:1px solid var(--line);max-width:38em}
+.facts li{display:flex;justify-content:space-between;gap:20px;padding:13px 0;border-bottom:1px solid var(--line)}
+.facts span{color:var(--muted);text-align:right}
+
+/* case files */
+.cases{display:grid;gap:16px}
+.case{background:var(--panel);border:1px solid var(--line);border-left:5px solid var(--blue);border-radius:10px}
+.case summary{list-style:none;cursor:pointer;padding:20px 22px;display:grid;grid-template-columns:1fr auto;gap:6px 20px}
+.case summary::-webkit-details-marker{display:none}
+.case summary p{margin:4px 0 0;color:var(--muted);max-width:44em;grid-column:1}
+.case .meta{display:flex;flex-wrap:wrap;gap:8px;align-self:start;justify-content:flex-end}
+.tag{font-size:.84rem;font-weight:500;padding:3px 12px;border-radius:999px;background:var(--panel2);border:1px solid var(--line);color:var(--muted)}
+.tag.red{background:var(--red);border-color:var(--red);color:#0C1424;font-weight:700}
+.tag.green{color:var(--green);border-color:var(--green);background:transparent}
+.toggle{grid-column:1/-1;font-size:.9rem;font-weight:600;color:var(--blue);margin-top:6px}
+.toggle::after{content:"Show details"}
+.case[open] .toggle::after{content:"Hide details"}
+.case .body{padding:0 22px 22px;border-top:1px solid var(--line);margin:0 0 0 0;display:grid;grid-template-columns:1fr 1fr;gap:28px;padding-top:20px}
+.case h4{margin:0 0 8px;font-size:1rem;font-weight:700}
+.case ul{margin:0;padding-left:1.1em;color:var(--muted)}
+.case li{margin-bottom:6px}
+pre{margin:0;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px 14px;font-family:var(--mono);font-size:.82rem;line-height:1.55;overflow-x:auto;color:var(--text)}
+.case .links{grid-column:1/-1}
+
+/* toolkit */
+.kit{display:grid;grid-template-columns:230px 1fr;border-top:1px solid var(--line);margin:0}
+.kit dt,.kit dd{margin:0;padding:16px 0;border-bottom:1px solid var(--line)}
+.kit dt{font-weight:700}
+.kit dd{display:flex;flex-wrap:wrap;gap:8px}
+.kit .tag{color:var(--text)}
+
+/* timeline */
+.gantt{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px 22px 12px;margin-bottom:28px}
+.axis{position:relative;height:22px;margin-left:200px;border-bottom:1px solid var(--line);font-size:.82rem;color:var(--muted)}
+.axis span{position:absolute;bottom:2px;transform:translateX(4px)}
+.axis span::before{content:"";position:absolute;left:-4px;bottom:-3px;width:1px;height:6px;background:var(--line)}
+.grow{display:grid;grid-template-columns:200px 1fr;align-items:center;min-height:52px}
+.grow .lbl{font-size:.92rem;padding-right:14px}
+.grow .lbl small{display:block;color:var(--muted);font-size:.82rem}
+.track{position:relative;height:52px;border-left:1px solid var(--line)}
+.bar-item{position:absolute;top:16px;height:20px;border-radius:5px;background:var(--blue)}
+.bar-item.amber{background:var(--amber)}
+.mark{position:absolute;top:17px;width:18px;height:18px;transform:translateX(-9px) rotate(45deg);background:var(--green);border-radius:3px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:20px 22px;display:flex;flex-direction:column;gap:8px}
+.card p{margin:0;color:var(--muted);font-size:.98rem}
+.card .when{font-size:.85rem;font-weight:600;color:var(--amber)}
+.card a{margin-top:auto;padding-top:6px;font-weight:600;font-size:.95rem}
+
+/* blog reader */
+.reader{padding:56px 0 88px}
+.reader .wrap{max-width:760px}
+.back{display:inline-block;margin-bottom:28px;font-weight:600}
+.post .pmeta{color:var(--amber);font-weight:600;font-size:.95rem;margin:0 0 10px}
+.post h1{font-size:clamp(2rem,5vw,3.1rem);font-stretch:106%;margin-bottom:28px}
+.toc{display:block;font-size:1rem;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px 22px;margin-bottom:36px}
+.toc p{margin:0;font-weight:700}
+.toc ul{margin:8px 0 0;padding-left:1.1em}
+.toc li{margin-bottom:4px}
+.post h2{font-size:1.5rem;margin:40px 0 10px}
+.post p{margin:0 0 1em;font-size:1.08rem;line-height:1.75}
+.post ul.plain{margin:0 0 1em;padding-left:1.2em;font-size:1.08rem;line-height:1.7}
+.post ul.plain li{margin-bottom:8px}
+.post .endlinks{margin-top:44px;padding-top:20px;border-top:1px solid var(--line);display:flex;gap:22px;flex-wrap:wrap;font-weight:600}
+
+/* roles, education, roadmap */
+.roles{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;max-width:38em}
+.roles .tag{color:var(--text);border-color:var(--blue)}
+.about .roles-title{margin:32px 0 0;font-weight:700;font-size:1rem}
+.cards.two{grid-template-columns:repeat(2,1fr)}
+.road{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding-top:30px}
+.road::before{content:"";position:absolute;top:9px;left:0;right:0;height:2px;background:var(--line)}
+.stage{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:20px 22px}
+.stage::before{content:"";position:absolute;top:-29px;left:22px;width:14px;height:14px;border-radius:50%;background:var(--blue);border:3px solid var(--bg);box-sizing:content-box;margin-left:-3px}
+.stage ul{margin:10px 0 0;padding-left:1.1em;color:var(--muted)}
+.stage li{margin-bottom:6px}
+.stage .goal{margin:0;color:var(--text);font-weight:600}
+.path{color:var(--muted);max-width:44em;margin:0 0 28px}
+
+/* contact */
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.contact ul{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.contact li{display:flex;justify-content:space-between;gap:20px;padding:15px 0;border-bottom:1px solid var(--line)}
+.contact li span{color:var(--muted)}
+footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--muted);font-size:.9rem}
+
+@media (max-width:1060px){ .status{display:none} }
+@media (max-width:900px){
+  .cards.two,.road{grid-template-columns:1fr}
+  .road{padding-top:0}
+  .road::before,.stage::before{display:none}
+  .hero-grid,.about,.contact{grid-template-columns:1fr;gap:36px}
+  .about .id{max-width:260px}
+  .cards{grid-template-columns:1fr}
+  .case .body{grid-template-columns:1fr}
+  .case summary{grid-template-columns:1fr}
+  .case .meta{justify-content:flex-start}
+}
+@media (max-width:700px){
+  section{padding:60px 0}
+  .status{display:none}
+  .kit{grid-template-columns:1fr}
+  .kit dt{padding-bottom:0;border-bottom:0}
+  .axis{margin-left:0}
+  .grow{grid-template-columns:1fr;min-height:0;padding-top:10px}
+  .grow .lbl{padding:0}
+  .track{border-left:0;border-bottom:1px solid var(--line)}
+}
+@media (max-width:560px){
+  nav a:not(:nth-child(2)):not(:last-child){display:none}
+  .log li{flex-direction:column;gap:0;padding:4px 0}
+  .log{min-height:0}
+}
+@media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} .alert{transition:none} }
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="wrap">
+    <a class="logo" href="#top">BR Harshitha</a>
+    <nav aria-label="Sections">
+      <a href="#about">About</a><a href="#cases">Case files</a><a href="#blog">Blog</a><a href="#toolkit">Toolkit</a><a href="#education">Education</a><a href="#roadmap">Roadmap</a><a href="#contact">Contact</a>
+    </nav>
+    <div class="status"><i></i>Open to SOC Analyst L1 roles</div>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <h1>BR Harshitha</h1>
+      <p class="role">Entry-level SOC Analyst candidate</p>
+      <p class="lead">I detect, investigate and document. My case files cover an SSH brute-force detector I wrote in Python, failed-login searches in Splunk and a phishing email analysis. I am looking for my first role on a security operations team.</p>
+      <div class="btns">
+        <a class="btn primary" href="#cases">Read my case files</a>
+        <a class="btn" href="mailto:harshithabrreddy@gmail.com">Email me</a>
+        <a class="btn" href="https://github.com/harshithabrreddy" rel="noopener">GitHub</a>
+      </div>
+    </div>
+
+    <div class="console" aria-label="Replay of my SSH brute-force detection lab">
+      <div class="console-head">
+        <span>Replay of my SSH brute-force lab</span>
+        <button type="button" id="replay">Replay</button>
+      </div>
+      <ol class="log" id="log"></ol>
+      <div class="alert" id="alert" role="status">
+        <h3>Possible SSH Brute-Force Attack <span class="sev">HIGH</span></h3>
+        <dl>
+          <dt>Source IP</dt><dd>127.0.0.1</dd>
+          <dt>Failed attempts</dt><dd>6 in 53 seconds</dd>
+          <dt>MITRE ATT&amp;CK</dt><dd>T1110.001, password guessing</dd>
+          <dt>My verdict</dt><dd class="verdict">Benign. Controlled lab activity, no successful login.</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap about">
+    <figure class="id" style="margin:0">
+      <img src="data:image/jpeg;base64,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" alt="Portrait of BR Harshitha" width="300" height="380">
+      <div><b>BR Harshitha</b><span>SOC Analyst L1 candidate</span></div>
+    </figure>
+    <div>
+      <h2>About me</h2>
+      <p>I am a cybersecurity enthusiast building a blue team skill set through hands-on labs on TryHackMe and Hack The Box, working in Kali Linux and Ubuntu.</p>
+      <p>I like the detective side of security: following a trail through logs until it makes sense, deciding whether an alert is real, and writing it up so the next person can act on it. I want to start in a SOC, learn from experienced analysts and grow toward incident response.</p>
+      <ul class="facts">
+        <li>Education <span>B.Tech, Computer Science and Cybersecurity</span></li>
+        <li>Experience <span>Cybersecurity intern, Digitdefence</span></li>
+        <li>Practice <span>TryHackMe and Hack The Box</span></li>
+      </ul>
+      <p class="roles-title">Roles I am targeting</p>
+      <div class="roles">
+        <span class="tag">SOC Analyst L1 and L2</span>
+        <span class="tag">Cybersecurity Analyst</span>
+        <span class="tag">Blue Team Analyst</span>
+        <span class="tag">Incident Response trainee</span>
+        <span class="tag">Threat hunting beginner roles</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="cases">
+  <div class="wrap">
+    <h2>Case files</h2>
+    <p class="intro">Three projects, each written up in its own GitHub repository. Open a case to see what I did.</p>
+    <div class="cases">
+
+      <details class="case" open>
+        <summary>
+          <div>
+            <h3>SSH brute-force detection and investigation</h3>
+          </div>
+          <div class="meta"><span class="tag red">HIGH alert</span><span class="tag green">Verdict: benign</span></div>
+          <p>I wrote a Python detector for repeated failed SSH logins, investigated the alert it raised and wrote the incident report.</p>
+          <span class="toggle"></span>
+        </summary>
+        <div class="body">
+          <div>
+            <h4>What I did</h4>
+            <ul>
+              <li>Collected SSH logs from <code>/var/log/auth.log</code> on Ubuntu (WSL) running OpenSSH.</li>
+              <li>Wrote two detectors in Python: a basic failed-login counter and a time-window detector.</li>
+              <li>Investigated the alert: source 127.0.0.1, 6 failed attempts in 53 seconds, no successful login.</li>
+              <li>Mapped it to Credential Access, T1110.001, and classified it as authorized lab activity.</li>
+              <li>Documented the alert, the MITRE mapping and an incident report.</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Detection rule</h4>
+            <pre>5 or more failed SSH logins
+from the same source IP
+within 60 seconds
+-> HIGH severity alert</pre>
+            <p style="margin:12px 0 0;color:var(--muted)">Next on my list: GeoIP enrichment and Splunk or Wazuh integration.</p>
+          </div>
+          <div class="links">
+            <span class="tag">Python</span> <span class="tag">Ubuntu on WSL</span> <span class="tag">OpenSSH</span> <span class="tag">MITRE ATT&amp;CK</span>
+            &nbsp;<a href="https://github.com/harshithabrreddy/SSH-brute-force-detection-and-investigation-lab" rel="noopener">View the repository</a>
+          </div>
+        </div>
+      </details>
+
+      <details class="case">
+        <summary>
+          <div><h3>Failed login detection in Splunk</h3></div>
+          <div class="meta"><span class="tag">Detection</span></div>
+          <p>I sent Windows Security logs to Splunk Enterprise and searched them for failed logons.</p>
+          <span class="toggle"></span>
+        </summary>
+        <div class="body">
+          <div>
+            <h4>What I did</h4>
+            <ul>
+              <li>Forwarded Windows Security event logs into Splunk Enterprise.</li>
+              <li>Searched for failed logons (Event ID 4625) and counted them per account.</li>
+              <li>Searched successful logons (Event ID 4624) to compare against the failures.</li>
+            </ul>
+            <h4 style="margin-top:16px">Skills practiced</h4>
+            <ul>
+              <li>SIEM basics and SPL queries</li>
+              <li>Windows event log analysis</li>
+              <li>SOC-style monitoring of authentication events</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Searches I used</h4>
+<pre>EventCode=4625
+
+EventCode=4625
+| stats count by Account_Name
+
+EventCode=4624</pre>
+          </div>
+          <div class="links">
+            <span class="tag">Splunk Enterprise</span> <span class="tag">SPL</span> <span class="tag">Windows event logs</span>
+            &nbsp;<a href="https://github.com/harshithabrreddy/Failed-Login-Detection-Using-Splunk" rel="noopener">View the repository</a>
+          </div>
+        </div>
+      </details>
+
+      <details class="case">
+        <summary>
+          <div><h3>Phishing email analysis</h3></div>
+          <div class="meta"><span class="tag">Analysis</span><span class="tag green">Verdict: phishing</span></div>
+          <p>I examined a phishing email sample to pick out the signs that it was malicious.</p>
+          <span class="toggle"></span>
+        </summary>
+        <div class="body">
+          <div>
+            <h4>What I did</h4>
+            <ul>
+              <li>Went through a phishing email sample in a text editor.</li>
+              <li>Identified a fake sender address and a suspicious URL.</li>
+              <li>Flagged urgency language, a malicious attachment and social engineering tactics.</li>
+              <li>Concluded the sample is phishing and wrote up the findings.</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Indicators I looked for</h4>
+            <ul>
+              <li>Sender address that does not match who it claims to be</li>
+              <li>Links that point somewhere unexpected</li>
+              <li>Pressure to act quickly</li>
+              <li>Unexpected attachments</li>
+            </ul>
+          </div>
+          <div class="links">
+            <span class="tag">Phishing analysis</span> <span class="tag">IOC identification</span>
+            &nbsp;<a href="https://github.com/harshithabrreddy/Phishing-Email-Analysis" rel="noopener">View the repository</a>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section id="blog">
+  <div class="wrap">
+    <h2>Blog and SOC notes</h2>
+    <p class="intro">Cybersecurity write-ups for beginners, based on the labs I have done.</p>
+    <div class="cards">
+      <article class="card">
+        <span class="when">SOC home lab, <span data-rt="post-homelab"></span></span>
+        <h3>Setting Up a SOC Home Lab as a Beginner</h3>
+        <p>What a home lab is, a simple four-machine layout, and the first attacks worth simulating.</p>
+        <a href="#post-homelab">Read the post</a>
+      </article>
+      <article class="card">
+        <span class="when">SOC investigation, <span data-rt="post-ssh"></span></span>
+        <h3>SSH Brute-Force Detection Using Ubuntu</h3>
+        <p>How to find repeated failed SSH logins in auth.log, and how I investigated the alert in my lab.</p>
+        <a href="#post-ssh">Read the post</a>
+      </article>
+      <article class="card">
+        <span class="when">SOC investigation, <span data-rt="post-phish"></span></span>
+        <h3>How I Investigate a Phishing Email</h3>
+        <p>The sender, links, attachment and wording I check, and how to reach a clear verdict.</p>
+        <a href="#post-phish">Read the post</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="toolkit">
+  <div class="wrap">
+    <h2>Toolkit</h2>
+    <p class="intro">Tools I have used in labs and projects.</p>
+    <dl class="kit">
+      <dt>SIEM and log analysis</dt>
+      <dd><span class="tag">Splunk</span><span class="tag">Windows event logs</span><span class="tag">Linux auth logs</span></dd>
+      <dt>Threat intelligence</dt>
+      <dd><span class="tag">VirusTotal</span><span class="tag">MITRE ATT&amp;CK</span></dd>
+      <dt>Network analysis</dt>
+      <dd><span class="tag">Wireshark</span><span class="tag">Nmap</span></dd>
+      <dt>Web security testing</dt>
+      <dd><span class="tag">Burp Suite</span></dd>
+      <dt>Systems and scripting</dt>
+      <dd><span class="tag">Kali Linux</span><span class="tag">Ubuntu</span><span class="tag">Python</span></dd>
+      <dt>Practice platforms</dt>
+      <dd><span class="tag">TryHackMe</span><span class="tag">Hack The Box</span></dd>
+    </dl>
+  </div>
+</section>
+
+<section id="timeline">
+  <div class="wrap">
+    <h2>Experience and certifications in 2026</h2>
+    <p class="intro">Training, an internship and a certification, side by side.</p>
+
+    <div class="gantt" id="gantt" aria-hidden="true"></div>
+
+    <div class="cards">
+      <article class="card">
+        <span class="when">16 Mar to 16 Jul 2026</span>
+        <h3>Cybersecurity intern, Digitdefence</h3>
+        <p>Worked on proof-of-concept projects and client assignments in the Cyber Security Professional Program. My internship letter confirms completion and notes positive feedback from project teams and clients.</p>
+      </article>
+      <article class="card">
+        <span class="when">16 Feb to 30 Apr 2026</span>
+        <h3>Cyber Security Certification Training</h3>
+        <p>Skillogic classroom course, 40 hours (qualifies for 40 PDUs). Certificate number 15260648133948.</p>
+        <a href="https://in.skillogic.com/verify-certificate" rel="noopener">Verify on Skillogic</a>
+      </article>
+      <article class="card">
+        <span class="when">Issued 21 Mar 2026</span>
+        <h3>Cybersecurity Fundamentals</h3>
+        <p>IBM SkillsBuild digital badge.</p>
+        <a href="https://www.credly.com/badges/96f3b4e1-014d-455e-992a-003bdef9a811" rel="noopener">Verify on Credly</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="wrap">
+    <h2>Education and learning</h2>
+    <p class="intro">My academic foundation and the security learning path I follow alongside it.</p>
+    <div class="cards two">
+      <article class="card">
+        <span class="when">2022 to 2026</span>
+        <h3>B.Tech in Computer Science and Cybersecurity</h3>
+        <p>Gates Institute of Technology. CGPA 8.04 out of 10.</p>
+        <p>Focus: cybersecurity, networking, operating systems, programming and computer science fundamentals.</p>
+      </article>
+      <article class="card">
+        <span class="when">Learning path</span>
+        <h3>TryHackMe</h3>
+        <p>SOC labs and blue-team practice, following a structured learning path.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="roadmap">
+  <div class="wrap">
+    <h2>Where I am heading</h2>
+    <p class="path">My path is SOC L1, then L2, then Detection Engineering. Here is how I plan to get there.</p>
+    <div class="road">
+      <article class="stage">
+        <h3>Short term</h3>
+        <p class="goal">Get sharper at day-to-day SOC work.</p>
+        <ul>
+          <li>Improve my skills with Splunk and SPL queries</li>
+          <li>Work through SOC case studies</li>
+        </ul>
+      </article>
+      <article class="stage">
+        <h3>Mid term</h3>
+        <p class="goal">Move from SOC L1 to L2 and grow as a detection analyst.</p>
+        <ul>
+          <li>Learn Wazuh and Microsoft Sentinel at an advanced level</li>
+          <li>Learn advanced threat hunting</li>
+        </ul>
+      </article>
+      <article class="stage">
+        <h3>Long term</h3>
+        <p class="goal">Become a Senior SOC Analyst.</p>
+        <ul>
+          <li>Specialize in incident documentation</li>
+          <li>Specialize in threat detection</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap contact">
+    <div>
+      <h2>Contact</h2>
+      <p class="intro" style="margin:0">I am open to SOC Analyst L1 and entry-level cybersecurity roles. Email is the quickest way to reach me.</p>
+    </div>
+    <ul>
+      <li>Email <a href="mailto:harshithabrreddy@gmail.com">harshithabrreddy@gmail.com</a></li>
+      <li>Phone <a href="tel:+919704253501">+91 97042 53501</a></li>
+      <li>LinkedIn <a href="https://www.linkedin.com/in/brharshitha" rel="noopener">linkedin.com/in/brharshitha</a></li>
+      <li>GitHub <a href="https://github.com/harshithabrreddy" rel="noopener">github.com/harshithabrreddy</a></li>
+    </ul>
+  </div>
+</section>
+</main>
+
+<div class="reader" id="reader" hidden>
+  <div class="wrap">
+    <a class="back" href="#blog">Back to blog</a>
+
+    <article class="post" id="post-homelab" data-title="Setting Up a SOC Home Lab as a Beginner" hidden>
+      <p class="pmeta">SOC home lab, <span data-rt="post-homelab"></span></p>
+      <h1>Setting Up a SOC Home Lab as a Beginner</h1>
+      <nav class="toc" aria-label="Table of contents">
+        <p>Table of contents</p>
+        <ul>
+          <li><a href="#t-hl-1">What this topic means</a></li>
+          <li><a href="#t-hl-2">Why it matters in SOC work</a></li>
+          <li><a href="#t-hl-3">A simple lab layout</a></li>
+          <li><a href="#t-hl-4">Tools and evidence to review</a></li>
+          <li><a href="#t-hl-5">Attacks to practice first</a></li>
+          <li><a href="#t-hl-6">Beginner notes</a></li>
+          <li><a href="#t-hl-7">Key takeaways</a></li>
+        </ul>
+      </nav>
+
+      <h2 id="t-hl-1">What this topic means</h2>
+      <p>A SOC home lab is a small, isolated network of virtual machines where you create security events on purpose, collect the logs in one place and practice spotting them. It is a scaled-down version of what a security operations center does every day.</p>
+
+      <h2 id="t-hl-2">Why it matters in SOC work</h2>
+      <p>An alert only makes sense once you have seen the activity behind it. In a lab you can run a port scan or a brute-force attempt yourself and then watch what it looks like in the logs. You learn which log source shows what, you can write and test detections without risking a real system, and you build proof of hands-on work that a certificate alone cannot show.</p>
+
+      <h2 id="t-hl-3">A simple lab layout</h2>
+      <p>The layout in my SOC-Homelab-Setup repository uses four machines on one isolated virtual network:</p>
+      <ul class="plain">
+        <li><b>Attacker:</b> Kali Linux, used to run Nmap scans and brute-force attempts.</li>
+        <li><b>Windows 11 endpoint:</b> runs Sysmon and a log agent, and forwards Windows event logs, PowerShell logs and Sysmon data.</li>
+        <li><b>Windows Server:</b> a second endpoint that forwards system and security logs.</li>
+        <li><b>SIEM server:</b> an Ubuntu Server that collects, indexes and displays the logs from every endpoint.</li>
+      </ul>
+
+      <h2 id="t-hl-4">Tools and evidence to review</h2>
+      <p>Kali Linux and Nmap generate the activity. Sysmon adds detailed Windows telemetry. The SIEM lets you search the logs and build alerts, and MITRE ATT&amp;CK gives you a shared language for labeling what you find.</p>
+      <p>The evidence worth reviewing is process creation events, network connections, authentication events and PowerShell command lines.</p>
+
+      <h2 id="t-hl-5">Attacks to practice first</h2>
+      <p>Four simulations are enough to start, each with its MITRE ATT&amp;CK technique:</p>
+      <ul class="plain">
+        <li><b>SSH or RDP brute force (T1110):</b> look for a burst of failed logins from one source.</li>
+        <li><b>Nmap port scan (T1046):</b> look for one source touching many ports in a short time.</li>
+        <li><b>Suspicious PowerShell and encoded commands (T1059.001):</b> look for long, encoded command lines in PowerShell and process creation logs.</li>
+        <li><b>New user creation and privilege escalation (T1136 and T1068):</b> look for new accounts and accounts added to privileged groups.</li>
+      </ul>
+
+      <h2 id="t-hl-6">Beginner notes</h2>
+      <ul class="plain">
+        <li>Keep the lab network isolated from your home network.</li>
+        <li>Take a snapshot of each virtual machine before you run an attack.</li>
+        <li>Write down the exact time and command of every test, so you can find it in the logs afterwards.</li>
+        <li>Add one log source at a time and confirm it arrives before adding the next.</li>
+        <li>Screenshot each detection and write it up like a small case.</li>
+      </ul>
+
+      <h2 id="t-hl-7">Key takeaways</h2>
+      <ul class="plain">
+        <li>A lab turns abstract alerts into activity you recognize.</li>
+        <li>Start small: one attacker, one endpoint and one SIEM.</li>
+        <li>Documenting every exercise is what turns practice into portfolio evidence.</li>
+      </ul>
+
+      <div class="endlinks">
+        <a href="https://github.com/harshithabrreddy/SOC-Homelab-Setup" rel="noopener">View the lab repository</a>
+        <a href="#blog">More posts</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </article>
+
+    <article class="post" id="post-ssh" data-title="SSH Brute-Force Detection Using Ubuntu" hidden>
+      <p class="pmeta">SOC investigation, <span data-rt="post-ssh"></span></p>
+      <h1>SSH Brute-Force Detection Using Ubuntu</h1>
+      <nav class="toc" aria-label="Table of contents">
+        <p>Table of contents</p>
+        <ul>
+          <li><a href="#t-ssh-1">What this topic means</a></li>
+          <li><a href="#t-ssh-2">Why it matters in SOC work</a></li>
+          <li><a href="#t-ssh-3">Tools and evidence to review</a></li>
+          <li><a href="#t-ssh-4">My detection rule</a></li>
+          <li><a href="#t-ssh-5">What I found in my lab</a></li>
+          <li><a href="#t-ssh-6">Beginner notes</a></li>
+          <li><a href="#t-ssh-7">Key takeaways</a></li>
+        </ul>
+      </nav>
+
+      <h2 id="t-ssh-1">What this topic means</h2>
+      <p>An SSH brute-force attack is a run of repeated failed login attempts against a Linux server, usually guessing passwords for one or more accounts. On Ubuntu, the SSH service writes every attempt to the authentication log, so the evidence is already there for an analyst to read.</p>
+
+      <h2 id="t-ssh-2">Why it matters in SOC work</h2>
+      <p>Brute force is a common first step for attackers and maps to MITRE ATT&amp;CK technique T1110 under Credential Access. Analysts review the volume of failures, the source IP, the targeted usernames, the timestamps and, most importantly, whether any login succeeded after the failures.</p>
+
+      <h2 id="t-ssh-3">Tools and evidence to review</h2>
+      <p>My lab used Ubuntu running under WSL, OpenSSH Server and Python 3. The main evidence is the file <code>/var/log/auth.log</code>.</p>
+      <ul class="plain">
+        <li>Source IP address of each failed attempt</li>
+        <li>Username that was targeted</li>
+        <li>Timestamps and how many attempts fall inside a short window</li>
+        <li>Any successful login that follows the failures</li>
+      </ul>
+
+      <h2 id="t-ssh-4">My detection rule</h2>
+      <p>I wrote two Python detectors. The first counts failed logins. The second looks at a time window, and it raises a HIGH severity alert when one source IP has five or more failed SSH attempts within 60 seconds.</p>
+
+      <h2 id="t-ssh-5">What I found in my lab</h2>
+      <p>The detector raised a "Possible SSH Brute-Force Attack" alert. When I investigated it, the source was 127.0.0.1, which is the machine itself, and there were 6 failed attempts against one username inside 53 seconds. I found no successful SSH login.</p>
+      <p>I mapped the activity to Credential Access, T1110.001 (password guessing), and classified it as benign, because I had generated the failed logins on purpose as part of a controlled lab. I then wrote an incident report covering the alert, the investigation and the MITRE mapping.</p>
+
+      <h2 id="t-ssh-6">Beginner notes</h2>
+      <ul class="plain">
+        <li>Start with who, what, when, where and how many attempts.</li>
+        <li>Always check for a successful login after the failures. Failures alone are noise, while a success after failures needs escalation.</li>
+        <li>A source of 127.0.0.1 tells a very different story from an unknown external address, so note where the traffic came from.</li>
+        <li>Thresholds need tuning. Five failures in 60 seconds suited my lab, but a real environment may need different numbers.</li>
+      </ul>
+      <p>Next on my list are GeoIP enrichment for external addresses and sending the alerts into Splunk or Wazuh.</p>
+
+      <h2 id="t-ssh-7">Key takeaways</h2>
+      <ul class="plain">
+        <li>A spike in failed logins needs context before it becomes an incident.</li>
+        <li>A successful login after repeated failures raises the severity.</li>
+        <li>Clear documentation makes escalation faster for the next analyst.</li>
+      </ul>
+
+      <div class="endlinks">
+        <a href="https://github.com/harshithabrreddy/SSH-brute-force-detection-and-investigation-lab" rel="noopener">View the lab repository</a>
+        <a href="#blog">More posts</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </article>
+
+    <article class="post" id="post-phish" data-title="How I Investigate a Phishing Email" hidden>
+      <p class="pmeta">SOC investigation, <span data-rt="post-phish"></span></p>
+      <h1>How I Investigate a Phishing Email</h1>
+      <nav class="toc" aria-label="Table of contents">
+        <p>Table of contents</p>
+        <ul>
+          <li><a href="#t-ph-1">What this topic means</a></li>
+          <li><a href="#t-ph-2">Why it matters in SOC work</a></li>
+          <li><a href="#t-ph-3">Tools and evidence to review</a></li>
+          <li><a href="#t-ph-4">What I looked for in my sample</a></li>
+          <li><a href="#t-ph-5">Beginner notes</a></li>
+          <li><a href="#t-ph-6">Key takeaways</a></li>
+        </ul>
+      </nav>
+
+      <h2 id="t-ph-1">What this topic means</h2>
+      <p>A phishing email pretends to come from someone trustworthy and tries to get the reader to click a link, open an attachment or hand over a password. Investigating one means deciding, with evidence, whether the message is malicious and what should happen next.</p>
+
+      <h2 id="t-ph-2">Why it matters in SOC work</h2>
+      <p>Email is one of the most common ways attackers reach people, and reported emails land in the SOC queue every day. A good analyst gives a fast, clear verdict and records the indicators of compromise so the same message can be blocked everywhere.</p>
+
+      <h2 id="t-ph-3">Tools and evidence to review</h2>
+      <ul class="plain">
+        <li><b>Sender details:</b> the display name, the real sender address and the reply-to address.</li>
+        <li><b>Email headers:</b> the path the message took and its SPF, DKIM and DMARC results.</li>
+        <li><b>Links:</b> where each one really points, checked without clicking.</li>
+        <li><b>Attachments:</b> the file name, type and hash.</li>
+        <li><b>VirusTotal:</b> to check the reputation of links, domains and file hashes.</li>
+      </ul>
+
+      <h2 id="t-ph-4">What I looked for in my sample</h2>
+      <p>I went through a phishing email sample in a text editor and picked out the signs it was malicious: a fake sender address, a suspicious URL, urgent wording that pressures the reader to act, a malicious attachment and general social engineering tactics. My verdict was phishing, and I wrote up the findings in my repository.</p>
+
+      <h2 id="t-ph-5">Beginner notes</h2>
+      <ul class="plain">
+        <li>Never click links or open attachments from the email on your normal machine.</li>
+        <li>Defang indicators when you write them down, for example <code>hxxp://example[.]com</code>, so nobody clicks them by accident.</li>
+        <li>Compare the display name with the real address, because attackers often fake only the name.</li>
+        <li>Finish with an action as well as a verdict: block the sender and the link, remove the email from other mailboxes, and reset the password if someone clicked.</li>
+      </ul>
+
+      <h2 id="t-ph-6">Key takeaways</h2>
+      <ul class="plain">
+        <li>Check the sender, the links, the attachment and the wording, in that order.</li>
+        <li>Record every indicator so it can be blocked.</li>
+        <li>A clear verdict and next action help the team respond faster.</li>
+      </ul>
+
+      <div class="endlinks">
+        <a href="https://github.com/harshithabrreddy/Phishing-Email-Analysis" rel="noopener">View the analysis repository</a>
+        <a href="#blog">More posts</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </article>
+  </div>
+</div>
+
+<footer><div class="wrap">© <span id="yr"></span> BR Harshitha</div></footer>
+
+<script>
+document.getElementById("yr").textContent = new Date().getFullYear();
+const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* Alert replay: six failed logins, the rule matches, the alert appears. */
+const log = document.getElementById("log");
+const alertBox = document.getElementById("alert");
+let timers = [];
+function addLine(label, text, cls){
+  const li = document.createElement("li");
+  if(cls) li.className = cls;
+  const b = document.createElement("b"); b.textContent = label;
+  const s = document.createElement("span"); s.textContent = text;
+  li.append(b, s); log.append(li);
+}
+function showAll(){
+  log.innerHTML = "";
+  for(let i=1;i<=6;i++){
+    addLine("attempt "+i+" of 6","failed SSH login, source 127.0.0.1");
+    if(i===5) addLine("rule matched","5 or more failures within 60 seconds","rule");
+  }
+  alertBox.classList.remove("hide");
+}
+function play(){
+  timers.forEach(clearTimeout); timers = [];
+  log.innerHTML = ""; alertBox.classList.add("hide");
+  let t = 300;
+  for(let i=1;i<=6;i++){
+    timers.push(setTimeout(()=>addLine("attempt "+i+" of 6","failed SSH login, source 127.0.0.1"), t));
+    t += 520;
+    if(i===5){
+      timers.push(setTimeout(()=>addLine("rule matched","5 or more failures within 60 seconds","rule"), t));
+      t += 520;
+    }
+  }
+  timers.push(setTimeout(()=>alertBox.classList.remove("hide"), t+200));
+}
+document.getElementById("replay").addEventListener("click", ()=> reduce ? showAll() : play());
+reduce ? showAll() : play();
+
+/* Blog: reading times and post view */
+document.querySelectorAll("[data-rt]").forEach(el=>{
+  const p = document.getElementById(el.dataset.rt);
+  const words = p.textContent.trim().split(/\s+/).length;
+  el.textContent = Math.max(1, Math.round(words/200)) + " min read";
+});
+const main = document.getElementById("top");
+const reader = document.getElementById("reader");
+const posts = [...document.querySelectorAll(".post")];
+const baseTitle = document.title;
+function route(){
+  const id = decodeURIComponent(location.hash.slice(1));
+  const el = id ? document.getElementById(id) : null;
+  const post = el && el.closest(".post");
+  if(post){
+    main.hidden = true; reader.hidden = false;
+    posts.forEach(p => p.hidden = (p !== post));
+    document.title = post.dataset.title + " | BR Harshitha";
+    if(el === post){
+      const top = () => window.scrollTo({top:0, behavior:"instant"});
+      top(); requestAnimationFrame(top);
+    }
+    else el.scrollIntoView();
+  } else {
+    main.hidden = false; reader.hidden = true;
+    document.title = baseTitle;
+    if(el) el.scrollIntoView();
+  }
+}
+window.addEventListener("hashchange", route);
+route();
+
+/* 2026 timeline, drawn from real dates */
+(function(){
+  const g = document.getElementById("gantt");
+  const start = Date.UTC(2026,1,1), end = Date.UTC(2026,7,1);
+  const pct = d => ((d - start) / (end - start)) * 100;
+  const D = (m,d) => Date.UTC(2026,m,d);
+  const months = ["Feb","Mar","Apr","May","Jun","Jul"];
+
+  const axis = document.createElement("div"); axis.className = "axis";
+  months.forEach((m,i)=>{ const s=document.createElement("span"); s.textContent=m; s.style.left=pct(D(1+i,1))+"%"; axis.append(s); });
+  g.append(axis);
+
+  function row(label, sub, make){
+    const r = document.createElement("div"); r.className = "grow";
+    const l = document.createElement("div"); l.className = "lbl"; l.textContent = label;
+    const sm = document.createElement("small"); sm.textContent = sub; l.append(sm);
+    const t = document.createElement("div"); t.className = "track"; make(t);
+    r.append(l,t); g.append(r);
+  }
+  const bar = (cls,a,b) => t => { const e=document.createElement("div"); e.className="bar-item "+cls; e.style.left=pct(a)+"%"; e.style.width=(pct(b+86400000)-pct(a))+"%"; t.append(e); };
+  row("Skillogic training","16 Feb to 30 Apr", bar("amber", D(1,16), D(3,30)));
+  row("Digitdefence internship","16 Mar to 16 Jul", bar("", D(2,16), D(6,16)));
+  row("IBM SkillsBuild badge","21 Mar", t => { const e=document.createElement("div"); e.className="mark"; e.style.left=pct(D(2,21))+"%"; t.append(e); });
+})();
+</script>
+</body>
+</html>
